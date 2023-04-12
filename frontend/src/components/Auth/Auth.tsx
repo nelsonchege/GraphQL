@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 
 export interface IAuthProps {
-  session: Session;
+  session?: Session;
   reloadSession: () => void;
 }
 
