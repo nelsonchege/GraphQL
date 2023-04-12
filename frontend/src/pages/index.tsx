@@ -5,10 +5,17 @@ import Auth from "../components/Auth/Auth";
 import Chat from "../components/Chat/Chat";
 
 const Home: NextPage = () => {
-  const { data } = useSession();
+  const { data: session } = useSession();
+  const reloadSession = () => {};
   return (
     <>
-      <Box>{data?.user ? <Chat /> : <Auth />}</Box>
+      <Box>
+        {session?.user.username ? (
+          <Chat />
+        ) : (
+          <Auth session={session} reloadSession={reloadSession} />
+        )}
+      </Box>
     </>
   );
 };
