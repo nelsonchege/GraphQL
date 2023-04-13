@@ -5,12 +5,14 @@ import { json } from "body-parser";
 import cors from "cors";
 import express from "express";
 import http from "http";
+import resolvers from "./graphql/resolvers";
+import typeDefs from "./graphql/typeDefs";
 
 interface MyContext {
   token?: String;
 }
 
-async function main(typeDefs, resolvers) {
+async function main() {
   const app = express();
   const httpServer = http.createServer(app);
 
@@ -35,3 +37,7 @@ async function main(typeDefs, resolvers) {
   );
   console.log(`🚀 Server ready at http://localhost:4000/graphql`);
 }
+
+main().catch((e) => {
+  console.log(e);
+});
