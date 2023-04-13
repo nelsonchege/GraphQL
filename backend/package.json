@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +17,12 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "graphql": "^16.6.0",
-    "lodash.merge": "^4.6.2"
+    "lodash.merge": "^4.6.2",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
-    "@types/lodash.merge": "^4.6.7"
+    "@types/lodash.merge": "^4.6.7",
+    "nodemon": "^2.0.22",
+    "typescript": "^5.0.4"
   }
 }

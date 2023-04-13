@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import { json } from "body-parser";
 import cors from "cors";
 import express from "express";
@@ -16,9 +17,10 @@ async function main() {
   const app = express();
   const httpServer = http.createServer(app);
 
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+
   const server = new ApolloServer<MyContext>({
-    typeDefs,
-    resolvers,
+    schema,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 
