@@ -7,6 +7,7 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import express from "express";
 import http from "http";
+import { getSession } from "next-auth/react";
 import resolvers from "./graphql/resolvers";
 import typeDefs from "./graphql/typeDefs";
 
@@ -35,7 +36,9 @@ async function main() {
     }),
     json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: req.headers.token }),
+      context: async ({ req, res }) => ({
+        session: await getSession({ req }),
+      }),
     })
   );
 
