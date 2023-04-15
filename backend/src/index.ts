@@ -10,10 +10,7 @@ import http from "http";
 import { getSession } from "next-auth/react";
 import resolvers from "./graphql/resolvers";
 import typeDefs from "./graphql/typeDefs";
-
-interface MyContext {
-  token?: String;
-}
+import { GraphQLContext } from "./utils/types";
 
 async function main() {
   dotenv.config();
@@ -22,7 +19,7 @@ async function main() {
 
   const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-  const server = new ApolloServer<MyContext>({
+  const server = new ApolloServer({
     schema,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
@@ -36,9 +33,11 @@ async function main() {
     }),
     json(),
     expressMiddleware(server, {
-      context: async ({ req, res }) => ({
-        session: await getSession({ req }),
-      }),
+      context: async ({ req }): Promise<GraphQLContext> => {
+        const session = await getSession({ req });
+
+        return { session: session };
+      },
     })
   );
 
