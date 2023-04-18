@@ -7,6 +7,7 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import express from "express";
 import http from "http";
+// import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import resolvers from "./graphql/resolvers";
 import typeDefs from "./graphql/typeDefs";
@@ -25,18 +26,31 @@ async function main() {
   });
 
   await server.start();
+
+  const corsOptions = {
+    origin: process.env.BASE_URL,
+    credentials: true,
+  };
+
   app.use(
     "/graphql",
-    cors<cors.CorsRequest>({
-      origin: process.env.CLIENT_ORIGIN,
-      credentials: true,
-    }),
+    cors<cors.CorsRequest>(corsOptions),
     json(),
     expressMiddleware(server, {
       context: async ({ req }): Promise<GraphQLContext> => {
-        const session = await getSession({ req });
-
-        return { session: session };
+        console.log("here");
+        // const session = await getSession({ req });
+        return {
+          session: {
+            user: {
+              name: "Nelson Chege",
+              email: "nelson3chege@gmail.com",
+              image:
+                "https://lh3.googleusercontent.com/a/AGNmyxbfWdz2wcLezgyW86hsSLnRoqTO4U6rkQ9zbgya=s96-c",
+            },
+            expires: "2023-05-18T19:47:21.895Z",
+          },
+        };
       },
     })
   );
