@@ -8,6 +8,7 @@ import * as dotenv from "dotenv";
 import express from "express";
 import http from "http";
 // import { Session } from "next-auth";
+import { PrismaClient } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import resolvers from "./graphql/resolvers";
 import typeDefs from "./graphql/typeDefs";
@@ -32,6 +33,8 @@ async function main() {
     credentials: true,
   };
 
+  const prisma = new PrismaClient();
+
   app.use(
     "/graphql",
     cors<cors.CorsRequest>(corsOptions),
@@ -50,6 +53,7 @@ async function main() {
             },
             expires: "2023-05-18T19:47:21.895Z",
           },
+          prisma,
         };
       },
     })
